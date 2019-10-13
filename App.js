@@ -41,7 +41,7 @@ import {
 
 import Home from "./src/screens/containers/home";
 import Eader from "./src/sections/components/header";
-
+import API from "./utils/API";
 import SuggestionList from "./src/videos/container/recipesResults";
 
 
@@ -50,6 +50,19 @@ export default class App extends Component{
 
 	constructor(props){
 		super(props)
+	}
+
+	state = {
+		list: [],
+
+	}
+
+	async componentDidMount(){
+	 const suggestionResults = await API.getSuggestion("chicken");
+		console.log(suggestionResults);
+		this.setState({
+			list: suggestionResults,
+		})
 	}
 
 	render() {
@@ -63,7 +76,8 @@ export default class App extends Component{
 			<Text>Buscador</Text>
 			<Text>Categorias</Text>
 			<Text>Sugges</Text>
-			<SuggestionList/>
+			<SuggestionList
+			list = {this.state.list}/>
 		</Home>	
 
 
