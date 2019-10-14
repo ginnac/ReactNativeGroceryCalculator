@@ -3,33 +3,27 @@ import {
     FlatList,
     Text,
     View,
-    Button
+    Linking
 } from "react-native";
 import Layout from "../components/suggestion-layout";
+import Detailslayout from "../components/recipeDetailsLabels";
 import Empty from "../components/empty";
 import Separator from "../components/separator";
 import Suggestion from "../components/suggestion";
-import API from "../../../utils/API"
+
 
 export default class SugesstionList extends React.Component{
     
     constructor(props){
 		super(props)
-        
+        this.state={
+            theId: "",
+            clicked: false
+        }
         
     }
-    
-    state = { 
-        recipeTitle: "More information",
-        recipeKey: "",
-        instructions: "",
-        recipeData: {
-			ingredients: [],
-			instructions: "",
-			calories: "",
-			source: ""
-		},
-      };
+
+
 
 
    renderEmpty =() => <Empty text="There is no mathing results"/>
@@ -37,36 +31,59 @@ export default class SugesstionList extends React.Component{
    keyExtractor=(item) => item.id.toString();
 
 
-   seeDetails = async ( id) => {
+   seeDetails =(id) => {
+  
+    this.setState({theId:id, clicked: true});
+    console.log(this.state)
     
-    const details = await API.getDetails(id);
-        console.log(details);
+    
    
   };
 
    renderItem = ({item}) => {
+
+    
        return(
        
        <View>
            <Suggestion {...item}
-           seeDetails={this.seeDetails} />
+           seeDetails={this.seeDetails}
+           />
+        
 
-            <Text> Ingredients: </Text>
-           <FlatList
-                keyExtractor={this.keyExtractor} 
+
+        { this.state.theId === item.id && this.state.clicked === true? 
+            (
+                
+            
+            <Layout title = "Details">
+            <Detailslayout title="Ingredients-">
+            <FlatList
+                //extraData={this.state.title,this.state.theId}
+               keyExtractor={this.keyExtractor} 
+              // 
                 data={item.extendedIngredients}
                 ListEmptyComponent={this.renderEmpty}
                 ItemSeparatorComponent = {this.ItemSeparator}
-                renderItem={({item})=>{return (
-                    <View >
-                        <Text>{item.original}</Text>
-                    </View>);}}/>
-                     
-           <Text> Instructions: </Text> 
-           <Text>{item.instructions}</Text>
-           <Text> Source: </Text> 
-           <Text> {item.sourceUrl}</Text>
-       </View>
+                renderItem={({item}) => {
+                    return(
+                        <Text style={{alignSelf: "center"}}>
+                        {item.original}</Text>
+                    )
+                }}/>
+                </Detailslayout>
+                <Detailslayout title="Instructions-">
+                <Text style={{alignSelf: "center", marginRight:3, marginLeft:6}} >{item.instructions}</Text>
+                </Detailslayout>
+                <Text style={{color: 'blue', alignSelf: "center",}}
+                    onPress={() => Linking.openURL(item.sourceUrl)}>
+                    Go to Article
+                </Text>
+            </Layout>
+            
+            ) : null }
+        
+        </View>
        
         
 
@@ -85,6 +102,7 @@ export default class SugesstionList extends React.Component{
 
             <Layout title = {this.props.sectionTitle}>
             <FlatList
+                extraData={this.state.title,this.state.theId}
                 keyExtractor={this.keyExtractor} 
                 data={this.props.list}
                 ListEmptyComponent={this.renderEmpty}

@@ -57,8 +57,39 @@ export default class App extends Component{
 	async componentDidMount(){
 	 const suggestionResults = await API.getSuggestion("chicken");
 		console.log(suggestionResults);
+
+
+		console.log(suggestionResults);
 		this.setState({
 			list: suggestionResults,
+			firstList: suggestionResults,
+			keyword: "",
+			sectionTitle: "Search results"
+		});
+
+		
+		const ingredientsArray =  this.state.firstList.map(recipe => {
+			recipe = `${recipe.id}`;
+
+			return recipe;
+		});
+
+		this.setState({
+			recipeId: ingredientsArray.join(",")
+
+		})
+
+		console.log(this.state.recipeId);
+
+
+	
+		const details = await API.getBulkDetails(this.state.recipeId);
+        console.log(details);
+		
+		this.setState({
+			list: details,
+			keyword: "",
+			sectionTitle: "Search results"
 		});
 
 		

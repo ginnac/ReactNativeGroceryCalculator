@@ -8,7 +8,7 @@ function Suggestion(props) {
 
             <View style={styles.left}>
                 <Image style={styles.cover}
-                source = {{uri:`https://spoonacular.com/recipeImages/${props.image}`}} />
+                source = {{uri:`${props.image}`}} />
                 <View style={styles.add}>
                <Text style={styles.addText}>+</Text> 
             </View>
@@ -18,14 +18,17 @@ function Suggestion(props) {
                 <Text style={styles.title}>{props.title}</Text>
                 <Text style={styles.min}>Ready in {props.readyInMinutes} min </Text>
                 <Text style={styles.servings}>Servings {props.servings}</Text>
+                <View style={{width:100, backgroundColor: "red",borderRadius:5 }}>
                 <Button 
+                style={styles.button}
                 id={props.id}
                 onPress={() =>props.seeDetails(props.id)}  
-                title="More"
+                title="See More"
   				color="orange"
   				accessibilityLabel="Chicken">
                 
                 </Button>
+                </View> 
             </View>
 
             
@@ -87,6 +90,12 @@ const styles = StyleSheet.create({
 
     genreText:{
         fontSize:11
+    },
+    button:{
+        width:20,
+        borderRadius:5,
+        alignSelf:"flex-start" ,
+        overflow: "hidden"
     }
 }) 
 
