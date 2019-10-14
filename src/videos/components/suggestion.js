@@ -1,5 +1,6 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, Button } from "react-native";
+import API from "../../../utils/API"
 
 function Suggestion(props) {
     return (
@@ -17,7 +18,17 @@ function Suggestion(props) {
                 <Text style={styles.title}>{props.title}</Text>
                 <Text style={styles.min}>Ready in {props.readyInMinutes} min </Text>
                 <Text style={styles.servings}>Servings {props.servings}</Text>
+                <Button 
+                id={props.id}
+                onPress={() =>props.seeDetails(props.id)}  
+                title="More"
+  				color="orange"
+  				accessibilityLabel="Chicken">
+                
+                </Button>
             </View>
+
+            
             
         </View>
     )

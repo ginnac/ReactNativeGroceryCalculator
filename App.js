@@ -6,25 +6,6 @@
  * @flow
  */
 
-// import React, {Component} from 'react';
-// import {
-//   Platform,
-//   SafeAreaView,
-//   StyleSheet,
-//   ScrollView,
-//   View,
-//   Text,
-//   StatusBar,
-//   Image
-// } from 'react-native';
-
-// import {
-//   Header,
-//   LearnMoreLinks,
-//   Colors,
-//   DebugInstructions,
-//   ReloadInstructions,
-// } from 'react-native/Libraries/NewAppScreen';
 
 // const instructions = Platform.select({
 // 	ios:"Press Cmd+R to reload,\n" +
@@ -36,7 +17,9 @@
 
 import React, {Component} from 'react';
 import {
-  Text
+  Text,
+  TextInput,
+  Button
 } from 'react-native';
 
 import Home from "./src/screens/containers/home";
@@ -50,56 +33,111 @@ export default class App extends Component{
 
 	constructor(props){
 		super(props)
+	
 	}
 
 	state = {
+		recipeId: [],
+		firstList: [],
 		list: [],
+		sectionTitle: "Recommended for you",
+		keyword: "",
+		recipeData: {
+			ingredients: [],
+			instructions: "",
+			calories: "",
+			source: ""
+		},
+		recipeKey: "",
 
 	}
+
+	
 
 	async componentDidMount(){
 	 const suggestionResults = await API.getSuggestion("chicken");
 		console.log(suggestionResults);
 		this.setState({
 			list: suggestionResults,
-		})
+		});
+
+		
 	}
+
+	
+	handleSubmit = async (event) => {
+		event.preventDefault();
+		
+		const suggestionResults = await API.getSuggestion(this.state.keyword);
+		console.log(suggestionResults);
+		this.setState({
+			firstList: suggestionResults,
+			keyword: "",
+			sectionTitle: "Search results"
+		});
+
+		
+		const ingredientsArray =  this.state.firstList.map(recipe => {
+			recipe = `${recipe.id}`;
+
+			return recipe;
+		});
+
+		this.setState({
+			recipeId: ingredientsArray.join(",")
+
+		})
+
+		console.log(this.state.recipeId);
+
+
+	
+		const details = await API.getBulkDetails(this.state.recipeId);
+        console.log(details);
+		
+		this.setState({
+			list: details,
+			keyword: "",
+			sectionTitle: "Search results"
+		});
+
+	   
+	  };
 
 	render() {
 		return (
-			
-		<Home>
+		
+			<Home>
 			<Eader>
 				<Text style={{color:"white"}}>Login</Text>
 			</Eader>
+
+			<TextInput
+       			value={this.state.keyword}
+				onChangeText={editedText =>
+					this.setState({ keyword: editedText }) 
+				}
+       			name="keyword"
+       			placeholder="keyword">
+       		</TextInput>
+     		<Button
+       			onPress={this.handleSubmit}
+  				title="Search"
+  				color="black"
+  				accessibilityLabel="Chicken">
+     		</Button>
 			
-			<Text>Buscador</Text>
-			<Text>Categorias</Text>
-			<Text>Sugges</Text>
-			<SuggestionList
-			list = {this.state.list}/>
-		</Home>	
+			
+				<SuggestionList
+					list = {this.state.list}
+					sectionTitle = {this.state.sectionTitle}/>
+			</Home>		
+		
 
 
 		);
 	}
 }
 
-// const styles = StyleSheet.create({
-// 	container: {
-// 		flex: 1,
-// 		flexDirection: "column",
-// 		justifyContent: 'center',
-// 		alignItems: 'center',
-// 		backgroundColor: Platform.select({
-// 			ios:'red',
-// 			android:"purple"})
-// 	},
-// 	instructions: {
-// 		textAlign: 'center',
-// 		color: '#333333',
-// 		marginBottom: 5
-// 	},
-	
-// });
+
 
