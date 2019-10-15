@@ -40,9 +40,7 @@ function Suggestion(props) {
 }
 
 const styles = StyleSheet.create({
-    container:{
-        flexDirection: "row",
-    },
+  container:{flexDirection: "row"},
     cover:{
         height:100,
         width:150,
