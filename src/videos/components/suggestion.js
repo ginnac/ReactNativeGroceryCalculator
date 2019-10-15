@@ -12,7 +12,7 @@ function Suggestion(props) {
             style={styles.button}
             id={props.id}
             onPress={() => props.seeDetails(props.id)}
-            title="+"
+            title={props.id===props.theId ? "-" : "+"}
             color="yellow"
             accessibilityLabel="Chicken">
           </Button>

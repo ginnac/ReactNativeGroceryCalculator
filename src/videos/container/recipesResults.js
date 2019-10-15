@@ -12,6 +12,7 @@ export default class SugesstionList extends React.Component {
     this.state = {
       theId: '',
       clicked: false,
+      count: 0,
     };
   }
 
@@ -20,14 +21,19 @@ export default class SugesstionList extends React.Component {
   keyExtractor = item => item.id.toString();
 
   seeDetails = id => {
-    this.setState({theId: id, clicked: true});
-    console.log(this.state);
+    if (id === this.state.theId && this.state.clicked === true) {
+      this.setState({clicked: false, theId: ''});
+      console.log(this.state);
+    } else {
+      this.setState({theId: id, clicked: true});
+      console.log(this.state);
+    }
   };
 
   renderItem = ({item}) => {
     return (
       <View>
-        <Suggestion {...item} seeDetails={this.seeDetails} />
+        <Suggestion {...item} theId={this.state.theId} seeDetails={this.seeDetails} />
 
         {this.state.theId === item.id && this.state.clicked === true ? (
           <Layout title="Details">

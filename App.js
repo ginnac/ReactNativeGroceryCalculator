@@ -110,7 +110,7 @@ export default class App extends Component {
     return (
       <Home>
         <Eader>
-          <Text style={{color: 'white'}}>Login</Text>
+          <Text style={{color: 'white'}}></Text>
         </Eader>
 
         <TextInput
