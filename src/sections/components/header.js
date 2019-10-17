@@ -10,7 +10,7 @@ function Eader(props) {
           <Image
             source={{
               uri:
-                'http://www.stickpng.com/assets/thumbs/5888ca5ebc2fc2ef3a1860d8.png',
+                'https://marketplace.canva.com/MAB06ua30xA/1/thumbnail_large/canva-chef-hat--MAB06ua30xA.png',
             }}
             style={{width: 50, height: 50, resizeMode: 'contain'}}
           />
